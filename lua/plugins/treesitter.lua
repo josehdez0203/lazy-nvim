@@ -7,6 +7,7 @@ return {
     {
       "nvim-treesitter/nvim-treesitter-textobjects",
       "p00f/nvim-ts-rainbow",
+      "folke/twilight.nvim",
       init = function()
         -- disable rtp plugin, as we only need its queries for mini.ai
         -- In case other textobject modules are enabled, we will load them
@@ -84,14 +85,17 @@ return {
         end
         added[lang] = true
         return true
+        ---@diagnostic disable-next-line: param-type-mismatch
       end, opts.ensure_installed)
     end
     require("nvim-treesitter.configs").setup(opts)
 
     if load_textobjects then
       -- PERF: no need to load the plugin, if we only need its queries for mini.ai
+      ---@diagnostic disable-next-line: undefined-field
       if opts.textobjects then
         for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
+          ---@diagnostic disable-next-line: undefined-field
           if opts.textobjects[mod] and opts.textobjects[mod].enable then
             local Loader = require("lazy.core.loader")
             Loader.disabled_rtp_plugins["nvim-treesitter-textobjects"] = nil
